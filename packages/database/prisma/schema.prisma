@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  plan          Plan           @relation(fields: [planId], references: [id])
+  planId        String
+  difyResources DifyResource[]
+  userSync      UserSync?
+}
+
+model Plan {
+  id           String @id @default(cuid())
+  name         String @unique
+  maxChatbots  Int
+  maxDocuments Int
+  featuresJson String // Storing features as a JSON string
+  users        User[]
+}
+
+model DifyResource {
+  id             String   @id @default(cuid())
+  localUser      User     @relation(fields: [localUserId], references: [id])
+  localUserId    String
+  difyResourceId String
+  resourceType   String // 'chatbot', 'document', 'conversation'
+  createdAt      DateTime @default(now())
+}
+
+model UserSync {
+  id           String   @id @default(cuid())
+  localUser    User     @relation(fields: [localUserId], references: [id])
+  localUserId  String   @unique
+  difyUserId   String
+  difyToken    String
+  refreshToken String
+  lastSynced   DateTime
+}
