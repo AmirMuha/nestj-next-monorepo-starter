@@ -1,11 +1,21 @@
 import { Module } from '@nestjs/common';
-import { TrpcController } from './trpc.controller';
+import { TrpcService } from './trpc.service';
+import { TrpcAppRouter } from './trpc-app-router.provider';
+import { TrpcModule as NestTrpcModule } from 'nestjs-trpc';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    NestTrpcModule.forRootAsync({
+      imports: [TrpcModule],
+      inject: [TrpcAppRouter],
+      useFactory: (router: TrpcAppRouter) => ({
+        path: '/trpc',
+        router: router.router,
+      }),
+    }),
     ClientsModule.registerAsync([
       {
         name: 'AUTH_SERVICE',
@@ -22,6 +32,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       },
     ]),
   ],
-  controllers: [TrpcController],
+  providers: [TrpcService, TrpcAppRouter],
+  exports: [TrpcService],
 })
 export class TrpcModule {}

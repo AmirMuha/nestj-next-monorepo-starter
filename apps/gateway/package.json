@@ -32,6 +32,7 @@
     "@trpc/server": "^11.6.0",
     "axios": "^1.12.2",
     "grpc": "^1.24.11",
+    "nestjs-trpc": "^1.6.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
