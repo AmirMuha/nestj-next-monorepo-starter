@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
+import {
+  Ability,
+  AbilityBuilder,
+  AbilityClass,
+  ExtractSubjectType,
+  InferSubjects,
+} from '@casl/ability';
 import { Plan } from '@repo/types';
 
 class User {
@@ -24,14 +30,18 @@ export enum Action {
   Delete = 'delete',
 }
 
-export type Subjects = InferSubjects<typeof User | typeof Chatbot | typeof Document | 'all'>;
+export type Subjects = InferSubjects<
+  typeof User | typeof Chatbot | typeof Document | 'all'
+>;
 
 export type AppAbility = Ability<[Action, Subjects]>;
 
 @Injectable()
 export class AbilityFactory {
   createForUser(user: User & { plan: Plan }) {
-    const { can, cannot, build } = new AbilityBuilder<AppAbility>(Ability as AbilityClass<AppAbility>);
+    const { can, cannot, build } = new AbilityBuilder<AppAbility>(
+      Ability as AbilityClass<AppAbility>,
+    );
 
     if (user.plan.name === 'free') {
       can(Action.Create, Chatbot, { count: { $lt: user.plan.maxChatbots } });
@@ -41,7 +51,8 @@ export class AbilityFactory {
     }
 
     return build({
-      detectSubjectType: (item) => item.constructor as ExtractSubjectType<Subjects>,
+      detectSubjectType: (item) =>
+        item.constructor as ExtractSubjectType<Subjects>,
     });
   }
 }

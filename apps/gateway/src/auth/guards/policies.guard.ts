@@ -1,7 +1,10 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AbilityFactory, AppAbility } from '../ability/ability.factory';
-import { CHECK_POLICIES_KEY, PolicyHandler } from '../decorators/check-policies.decorator';
+import {
+  CHECK_POLICIES_KEY,
+  PolicyHandler,
+} from '../decorators/check-policies.decorator';
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
@@ -19,7 +22,10 @@ export class PoliciesGuard implements CanActivate {
 
     const { user } = context.switchToHttp().getRequest();
     // In a real app, you would fetch the user with their plan from the database
-    const userWithPlan = { ...user, plan: { name: 'free', maxChatbots: 1, maxDocuments: 5 } };
+    const userWithPlan = {
+      ...user,
+      plan: { name: 'free', maxChatbots: 1, maxDocuments: 5 },
+    };
     const ability = this.abilityFactory.createForUser(userWithPlan);
 
     return policyHandlers.every((handler) =>

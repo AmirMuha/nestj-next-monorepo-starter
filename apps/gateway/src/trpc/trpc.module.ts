@@ -24,7 +24,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           transport: Transport.GRPC,
           options: {
             package: 'auth',
-            protoPath: join(__dirname, '../../../packages/proto/src/auth.proto'),
+            protoPath: join(
+              __dirname,
+              '../../../packages/proto/src/auth.proto',
+            ),
             url: `${configService.get('AUTH_SERVICE_HOST')}:${configService.get('AUTH_SERVICE_PORT')}`,
           },
         }),
