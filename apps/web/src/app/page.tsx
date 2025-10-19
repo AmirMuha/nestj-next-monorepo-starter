@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useAuthStore } from "@/store/auth";
 import { Button } from "@repo/ui/button";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { trpc } from "@/utils/trpc";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -12,16 +12,18 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
   const setToken = useAuthStore((state) => state.setToken);
   const router = useRouter();
+  const loginMutation = trpc.login.useMutation();
+  const registerMutation = trpc.register.useMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const url = isLogin ? "/api/auth/login" : "/api/auth/register";
     try {
-      const response = await axios.post(url, { email, password });
       if (isLogin) {
-        setToken(response.data.token);
+        const result = await loginMutation.mutateAsync({ email, password });
+        setToken(result.token);
         router.push("/dashboard");
       } else {
+        await registerMutation.mutateAsync({ email, password });
         alert("Registration successful! Please log in.");
         setIsLogin(true);
       }

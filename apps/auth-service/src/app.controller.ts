@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GrpcMethod } from '@nestjs/microservices';
-import type { RegisterRequest, LoginRequest } from './proto/auth';
+import type { RegisterRequest, LoginRequest } from '@repo/proto/src/generated/auth';
 
 @Controller()
 export class AppController {

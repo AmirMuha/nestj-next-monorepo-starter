@@ -7,7 +7,7 @@ This repository contains a full-stack monorepo built with NestJS, Next.js, and T
 The project follows an API Gateway + Microservices pattern:
 
 ```
-Client → NestJS Gateway → Dify Proxy → Dify API
+Client → NestJS Gateway → AI Proxy → Dify API
                     ↘ Your Services → Your DB
 ```
 
@@ -26,14 +26,18 @@ packages/
 ├── types/ (Shared TypeScript types)
 ├── ui/ (Shared React components)
 ├── utils/ (Shared utilities)
-└── database/ (DB client & migrations)
+├── database/ (DB client & migrations)
+└── proto/ (Shared gRPC proto files)
 ```
 
 ## ✨ Features
 
-*   **Authentication:** The `auth-service` is a gRPC microservice that handles user registration and login, with JWT generation.
-*   **API Gateway:** The `gateway` is a NestJS application that acts as a gateway to the other services. It includes a Dify proxy, JWT authentication, and policy-based authorization with CASL.
+*   **Authentication:** The `auth-service` is a gRPC microservice that handles user registration and login, with password hashing and JWT generation.
+*   **API Gateway:** The `gateway` is a NestJS application that acts as a gateway to the other services. It includes an AI proxy with a strategy pattern, JWT authentication, and policy-based authorization with CASL.
 *   **Database:** The `database` package uses Prisma with a SQLite database. The schema includes models for users, plans, and Dify resources.
+*   **tRPC:** The project uses tRPC for type-safe communication between the `web` application and the `gateway`.
+*   **Shared Proto Files:** The gRPC `.proto` files are stored in a shared `proto` package to avoid duplication.
+*   **Externalized Configuration:** All configuration is externalized to a `.env` file.
 *   **Frontend:** The `web` application is a Next.js frontend with a login page and a protected dashboard. It uses Zustand for state management and a shared `Button` component from the `ui` package.
 *   **Admin Dashboard:** The `admin-dashboard` is a placeholder Next.js application for administrative tasks.
 
@@ -54,6 +58,9 @@ To get started with this project, follow these steps:
     ```bash
     JWT_SECRET=your-jwt-secret
     DIFY_API_KEY=your-dify-api-key
+    DIFY_API_URL=https://api.dify.ai/v1
+    AUTH_SERVICE_HOST=0.0.0.0
+    AUTH_SERVICE_PORT=50051
     ```
 
 3.  **Run the applications:**
@@ -73,7 +80,5 @@ To get started with this project, follow these steps:
 ## 📝 Notes
 
 *   The frontend applications (`web` and `admin-dashboard`) have their builds disabled due to a persistent issue with the Next.js build in the development environment. The applications can be run in development mode, but they cannot be built for production.
-*   The `DifyHttpService` includes a mock token refresh mechanism. In a real application, you would need to implement the actual token refresh logic.
 *   The `PoliciesGuard` uses a mock user object with a hardcoded plan. In a real application, you would need to fetch the user and their plan from the database.
-*   The `auth-service` does not currently hash passwords. This is a placeholder and should be implemented in a real application.
 *   The `core-service` is a placeholder and does not contain any functional code.

@@ -28,6 +28,7 @@
     "@nestjs/microservices": "^11.1.6",
     "@nestjs/platform-express": "^11.0.1",
     "@repo/database": "^0.0.0",
+    "@repo/proto": "^0.0.0",
     "bcrypt": "^6.0.0",
     "grpc": "^1.24.11",
     "reflect-metadata": "^0.2.2",

@@ -1,25 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
+import { TrpcController } from './trpc.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { AbilityFactory } from './ability/ability.factory';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    PassportModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '60m' },
-      }),
-    }),
     ClientsModule.registerAsync([
       {
         name: 'AUTH_SERVICE',
@@ -36,8 +22,6 @@ import { AbilityFactory } from './ability/ability.factory';
       },
     ]),
   ],
-  controllers: [AuthController],
-  providers: [JwtStrategy, AbilityFactory],
-  exports: [AbilityFactory],
+  controllers: [TrpcController],
 })
-export class AuthModule {}
+export class TrpcModule {}

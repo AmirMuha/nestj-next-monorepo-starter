@@ -15,7 +15,10 @@ describe('AuthController', () => {
             transport: Transport.GRPC,
             options: {
               package: 'auth',
-              protoPath: join(__dirname, '../../src/proto/auth.proto'),
+              protoPath: join(
+                __dirname,
+                '../../../../packages/proto/src/auth.proto',
+              ),
             },
           },
         ]),

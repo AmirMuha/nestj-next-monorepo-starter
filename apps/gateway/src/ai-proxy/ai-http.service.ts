@@ -4,7 +4,7 @@ import { AxiosRequestConfig } from 'axios';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
-export class DifyHttpService {
+export class AiHttpService {
   constructor(private readonly httpService: HttpService) {}
 
   private async refreshToken(userId: string) {

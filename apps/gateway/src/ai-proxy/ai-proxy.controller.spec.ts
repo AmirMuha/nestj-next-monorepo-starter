@@ -1,27 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DifyProxyController } from './dify-proxy.controller';
-import { DifyProxyService } from './dify-proxy.service';
+import { AiProxyController } from './ai-proxy.controller';
+import { AiProxyService } from './ai-proxy.service';
 import { AbilityFactory } from '../auth/ability/ability.factory';
-import { DifyHttpService } from './dify-http.service';
+import { AiHttpService } from './ai-http.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { DifyProxyStrategy } from './strategies/dify.strategy';
 
-describe('DifyProxyController', () => {
-  let controller: DifyProxyController;
+describe('AiProxyController', () => {
+  let controller: AiProxyController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
-      controllers: [DifyProxyController],
+      controllers: [AiProxyController],
       providers: [
-        DifyProxyService,
-        DifyHttpService,
+        AiProxyService,
+        AiHttpService,
         AbilityFactory,
         ConfigService,
+        DifyProxyStrategy,
       ],
     }).compile();
 
-    controller = module.get<DifyProxyController>(DifyProxyController);
+    controller = module.get<AiProxyController>(AiProxyController);
   });
 
   it('should be defined', () => {
