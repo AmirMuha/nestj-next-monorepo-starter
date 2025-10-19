@@ -82,3 +82,7 @@ To get started with this project, follow these steps:
 *   The frontend applications (`web` and `admin-dashboard`) have their builds disabled due to a persistent issue with the Next.js build in the development environment. The applications can be run in development mode, but they cannot be built for production.
 *   The `PoliciesGuard` uses a mock user object with a hardcoded plan. In a real application, you would need to fetch the user and their plan from the database.
 *   The `core-service` is a placeholder and does not contain any functional code.
+
+## 📚 Documentation
+
+For more detailed documentation about the folder structure, architecture, and design patterns, please see the [docs application](/apps/docs).
